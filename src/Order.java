@@ -1,15 +1,16 @@
 
 public class Order {
-    private OrderType orderType;
+    private OrderType orderType; //Buy or Sell
     private int tickerSymbol;
     private int quantity;
     private float price;
+    private boolean active; // lock-free synchronization
 
-    private boolean active;
-
+    //Default Constructor
     public Order() {
     }
 
+    //Parameterized Constructor
     public Order(OrderType orderType, int tickerSymbol, int quantity, float price) {
         this.orderType = orderType;
         this.tickerSymbol = tickerSymbol;
