@@ -14,25 +14,24 @@ public class StockTradingEngine {
     private static final int[] sellIndex = new int[MAX_TICKERS];
 
     //add buy order and sell order to their respective 2-D array
-    public static synchronized void addOrder(OrderType orderType,int tickerSymbol, int quantity, float price) {
+    public static synchronized void addOrder(OrderType orderType,String tickerSymbol, int quantity, float price) {
         //checks the valid boundaries for the ticker symbol
-        if(tickerSymbol < 0 || tickerSymbol >= MAX_TICKERS) {
-            return;
-        }
+
+        int tickerHash = Math.abs(tickerSymbol.hashCode()) % MAX_TICKERS;
 
         Order order = new Order(orderType, tickerSymbol, quantity, price);
         // for buy order
         if(order.getOrderType() == OrderType.Buy){
-            int idx=buyIndex[tickerSymbol]++;
+            int idx=buyIndex[tickerHash]++;
             if(idx < MAX_ORDERS_PER_TICKER) {
-                buyOrders[tickerSymbol][idx] = order;
+                buyOrders[tickerHash][idx] = order;
             }
         }
         //for sell order
         else{
-            int idx=sellIndex[tickerSymbol]++;
+            int idx=sellIndex[tickerHash]++;
             if(idx < MAX_ORDERS_PER_TICKER) {
-                sellOrders[tickerSymbol][idx] = order;
+                sellOrders[tickerHash][idx] = order;
             }
         }
         System.out.println("Order Added Successfully"+ order.toString());
@@ -40,18 +39,19 @@ public class StockTradingEngine {
     }
 
     //to match buy order and sell order
-    public static synchronized void matchOrder(int tickerSymbol) {
+    public static synchronized void matchOrder(String tickerSymbol) {
+        int tickerHash = Math.abs(tickerSymbol.hashCode()) % MAX_TICKERS;
         //gets buy count for the given tickerSymbol
-        int buyCount = buyIndex[tickerSymbol];
+        int buyCount = buyIndex[tickerHash];
         //gets sell count for the given tickerSymbol
-        int sellCount = sellIndex[tickerSymbol];
+        int sellCount = sellIndex[tickerHash];
         for(int i = 0; i < buyCount; i++) {
-            Order buyOrder = buyOrders[tickerSymbol][i];
+            Order buyOrder = buyOrders[tickerHash][i];
             //checks for active and valid buy order
             if(buyOrder == null || !buyOrder.isActive() )
                 continue;
             for(int j = 0; j < sellCount; j++) {
-                Order sellOrder = sellOrders[tickerSymbol][j];
+                Order sellOrder = sellOrders[tickerHash][j];
                 //checks for active and valid sell and buy order
                 if(sellOrder == null || !sellOrder.isActive() || !buyOrder.isActive() )
                     continue;

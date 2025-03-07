@@ -1,7 +1,7 @@
 
 public class Order {
     private OrderType orderType; //Buy or Sell
-    private int tickerSymbol;
+    private String tickerSymbol;
     private int quantity;
     private float price;
     private boolean active; // lock-free synchronization
@@ -11,7 +11,7 @@ public class Order {
     }
 
     //Parameterized Constructor
-    public Order(OrderType orderType, int tickerSymbol, int quantity, float price) {
+    public Order(OrderType orderType, String tickerSymbol, int quantity, float price) {
         this.orderType = orderType;
         this.tickerSymbol = tickerSymbol;
         this.quantity = quantity;
@@ -27,11 +27,11 @@ public class Order {
         this.orderType = orderType;
     }
 
-    public int getTickerSymbol() {
+    public String getTickerSymbol() {
         return tickerSymbol;
     }
 
-    public void setTickerSymbol(int tickerSymbol) {
+    public void setTickerSymbol(String tickerSymbol) {
         this.tickerSymbol = tickerSymbol;
     }
 
