@@ -64,8 +64,8 @@ A **high-performance**, **lock-free** stock trading engine implemented in **Java
 
 ```
 
-![Output](screenshots/output1.png)
-![Output](screenshots/output2.png)
+![Output](results/output1.png)
+![Output](results/output2.png)
 
 ```
 
